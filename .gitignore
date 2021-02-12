@@ -1,1 +1,4 @@
 .vscode
+__pycache__
+# A Surviellance folder with Images and Videos folders inside where the images/videos from the drone are stored
+Surveillance
