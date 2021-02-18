@@ -19,10 +19,8 @@ def calculateFingers(res, drawing):
                     start = tuple(res[s][0])
                     end = tuple(res[e][0])
                     far = tuple(res[f][0])
-                    a = math.sqrt((end[0] - start[0]) ** 2 +
-                                (end[1] - start[1]) ** 2)
-                    b = math.sqrt((far[0] - start[0]) ** 2 +
-                                (far[1] - start[1]) ** 2)
+                    a = math.sqrt((end[0] - start[0]) ** 2 + (end[1] - start[1]) ** 2)
+                    b = math.sqrt((far[0] - start[0]) ** 2 + (far[1] - start[1]) ** 2)
                     c = math.sqrt((end[0] - far[0]) ** 2 + (end[1] - far[1]) ** 2)
                     angle = math.acos((b ** 2 + c ** 2 - a ** 2) / (2 * b * c))  # cosine theorem
                     if angle <= math.pi / 2:  # angle less than 90 degree, treat as fingers
@@ -41,6 +39,9 @@ def calculateFingers(res, drawing):
 # Open Camera
 camera = cv2.VideoCapture(0)
 camera.set(10, 200)  # while True:
+confiList = [-1, 0,0,0,0,0]
+confiCount = 0
+
 while camera.isOpened():
     # Main Camera
     ret, frame = camera.read()
@@ -77,14 +78,27 @@ while camera.isOpened():
                 res = contours[ci]
         hull = cv2.convexHull(res)
         drawing = np.zeros(img.shape, np.uint8)
-        cv2.drawContours(drawing, [res], 0, (0, 255, 0), 2)
-        cv2.drawContours(drawing, [hull], 0, (0, 0, 255), 3)
+        cv2.drawContours(drawing, [res], 0, (0, 255, 0), 1)
+        #cv2.drawContours(drawing, [hull], 0, (0, 0, 255), 3)
 
         try:
             isFinishCal, cnt = calculateFingers(res, drawing)
+            if(confiCount < 100):
+                if cnt == 1 : confiList[1] += 1
+                if cnt == 2 : confiList[2] += 1
+                if cnt == 3 : confiList[3] += 1
+                if cnt == 4 : confiList[4] += 1
+                if cnt == 5 : confiList[5] += 1
+                confiCount += 1
+            else:
+                print("Running")
+                confiCount = 0
+                confiMax = max(confiList)
+                numOfFingers = confiList.index(confiMax)
+                print(numOfFingers)
         except:
             print("ERROR 2")
-        print("Fingers", cnt)
+        #print("Fingers", cnt)
         cv2.imshow('output', drawing)
         k = cv2.waitKey(10)
     if k == 27:  # press ESC to exit
