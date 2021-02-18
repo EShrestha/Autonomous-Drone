@@ -22,15 +22,25 @@ drone.streamon()
 lower_yellow = np.array([22,93,0])
 upper_yellow = np.array([45,255,255])
 
+def hasDetectedColor(maskI):
+    for x in maskI:
+        if(x == 255):
+            return True
+    return False
+
 while True:
     img = drone.get_frame_read().frame
     img = cv2.resize(img,(360,240))
 
     #Test Stuff
     mask = cv2.inRange(img, lower_yellow, upper_yellow)
-    result = cv2.bitwise_and(img,img,mask = mask)              
+    result = cv2.bitwise_and(img,img,mask = mask)
     #print(mask)
     #print(mask[0])
+    if(hasDetectedColor(mask[0])):
+        print("DETECTING YELLOW!")
+    else:
+        print("NO YELLOW!")
     #output = cv2.bitwise_and(image, image, mask=mask)
 
     #output "255 255 255 ... 255 255 255" or "0 0 0 ... 0 0 0"
@@ -40,9 +50,3 @@ while True:
     #cv2.imshow(img, cmap='gray')
     #plt.imshow
     cv2.waitKey(1)
-    
-
-    
-   
-
-    
