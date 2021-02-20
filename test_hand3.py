@@ -1,13 +1,11 @@
 import cv2
 import numpy as np
-#from google.colab.patches import cv2_imshow
 cap = cv2.VideoCapture(0)
-cap.set(10, 200)
+cap.set(200, 200)
 
-
-def handGesture():
-  ret,img = cap.read()
-  #img = cv2.resize(img, (int(img.shape[1]/4), int(img.shape[0]/4)))
+def handGesture(img):
+  # ret,img = cap.read()
+  img = cv2.resize(img, (int(img.shape[1]/4), int(img.shape[0]/4)))
   gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
   blur = cv2.GaussianBlur(gray, (5, 5), 0)
   ret, thresh1 = cv2.threshold(
@@ -33,7 +31,7 @@ def handGesture():
     cy = int(moments['m01']/moments['m00'])  # cy = M01/M00
 
   centr = (cx, cy)
-  cv2.circle(img, centr, 5, [0, 0, 255], 2)
+  cv2.circle(img, centr, 10, [0, 255, 0], 2)
   cv2.drawContours(drawing, [cnt], 0, (0, 255, 0), 2)
   cv2.drawContours(drawing, [hull], 0, (0, 0, 255), 2)
 
@@ -61,5 +59,10 @@ def handGesture():
 
 
 while True:
-
-    cv2.imshow("output", handGesture())
+    _, frame = cap.read()
+    img = cv2.resize(frame,(3024,4032))
+    
+    cv2.imshow("Output", handGesture(img))
+    key = cv2.waitKey(1)
+    if key == 27:
+        break

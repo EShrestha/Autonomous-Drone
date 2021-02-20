@@ -5,3 +5,4 @@ opencv-python==4.5.1.48
 pycodestyle==2.6.0
 pygame==2.0.1
 toml==0.10.2
+
