@@ -3,13 +3,6 @@ import numpy as np
 
 cap = cv2.VideoCapture(0)
 
-
-def hasDetectedColor(maskI):
-    for x in maskI:
-        if(x == 255):
-            return True
-    return False
-
 while True:
     _, frame = cap.read()
     hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -21,8 +14,10 @@ while True:
     #high_red = np.array([179, 255, 255])
     red_mask = cv2.inRange(hsv_frame, low_red, high_red)
     red = cv2.bitwise_and(frame, frame, mask=red_mask)
-    if(hasDetectedColor(red_mask[0])):
-        print("DETECTING RED!")
+    percent_red = (np.sum(red_mask) / np.size(red_mask)/255) * 100
+    if(percent_red) > 2.5: 
+        print("RED!")
+        # Drone trick here
  
 
     # Blue color
@@ -30,16 +25,20 @@ while True:
     high_blue = np.array([126, 255, 255])
     blue_mask = cv2.inRange(hsv_frame, low_blue, high_blue)
     blue = cv2.bitwise_and(frame, frame, mask=blue_mask)
-    if(hasDetectedColor(blue_mask[0])):
-        print("DETECTING BLUE!")
+    percent_blue = (np.sum(blue_mask) / np.size(blue_mask)/255) * 100
+    if(percent_blue) > 2.5: 
+        print("BLUE!")
+        # Drone trick here
 
     # Green color
     low_green = np.array([25, 52, 72])
     high_green = np.array([102, 255, 255])
     green_mask = cv2.inRange(hsv_frame, low_green, high_green)
     green = cv2.bitwise_and(frame, frame, mask=green_mask)
-    if(hasDetectedColor(green_mask[0])):
-        print("DETECTING GREEN!")
+    percent_green = (np.sum(green_mask) / np.size(green_mask)/255) * 100
+    if(percent_green) > 2.5: 
+        print("GREEN!")
+        # Drone trick here
 
     # Every color except white
     low = np.array([0, 42, 0])

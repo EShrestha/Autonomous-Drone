@@ -2,12 +2,10 @@ import cv2
 import numpy as np
 
 
-
 def nothing(x):
     # any operation
     pass
 
-cap = cv2.VideoCapture(0)
 
 cv2.namedWindow("Trackbars")
 cv2.createTrackbar("L-H", "Trackbars", 0, 180, nothing)
@@ -16,13 +14,14 @@ cv2.createTrackbar("L-V", "Trackbars", 134, 255, nothing)
 cv2.createTrackbar("U-H", "Trackbars", 180, 180, nothing)
 cv2.createTrackbar("U-S", "Trackbars", 255, 255, nothing)
 cv2.createTrackbar("U-V", "Trackbars", 243, 255, nothing)
-
 font = cv2.FONT_HERSHEY_COMPLEX
 
-while True:
-    _, frame = cap.read()
-    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+# Getting what key was pressed
+def getShape(frame):
+    _ = frame
 
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    font = cv2.FONT_HERSHEY_COMPLEX
     l_h = cv2.getTrackbarPos("L-H", "Trackbars")
     l_s = cv2.getTrackbarPos("L-S", "Trackbars")
     l_v = cv2.getTrackbarPos("L-V", "Trackbars")
@@ -40,10 +39,12 @@ while True:
     # Contours detection
     if int(cv2.__version__[0]) > 3:
         # Opencv 4.x.x
-        contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        contours, _ = cv2.findContours(
+        mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     else:
         # Opencv 3.x.x
-        _, contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        _, contours, _ = cv2.findContours(
+        mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
     for cnt in contours:
         area = cv2.contourArea(cnt)
@@ -55,23 +56,30 @@ while True:
             cv2.drawContours(frame, [approx], 0, (0, 0, 0), 5)
             cv2.drawContours(mask, [approx], 0, (0, 255, 0), 5)
 
-            if len(approx) == 3:
-                cv2.putText(frame, "Triangle", (x, y), font, 1, (0, 0, 0))
-                cv2.putText(mask, "Triangle", (x, y), font, 1, (0, 255, 0),2)
-            elif len(approx) == 4:
-                cv2.putText(frame, "Rectangle", (x, y), font, 1, (0, 0, 0))
-                cv2.putText(mask, "Rectangle", (x, y), font, 1, (0, 255, 0),2)
-            elif 7 < len(approx) < 20:
-                cv2.putText(frame, "Circle", (x, y), font, 1, (0, 0, 0))
-                cv2.putText(mask, "Circle", (x, y), font, 1, (0, 255, 0),2)
-
+        if len(approx) == 3:
+            cv2.putText(frame, "Triangle", (x, y), font, 1, (0, 0, 0))
+            cv2.putText(mask, "Triangle", (x, y), font, 1, (0, 255, 0), 2)
+            cv2.imshow("Frame", frame)
+            cv2.imshow("Mask", mask)
+            return 1
+        elif len(approx) == 4:
+            cv2.putText(frame, "Rectangle", (x, y), font, 1, (0, 0, 0))
+            cv2.putText(mask, "Rectangle", (x, y), font, 1, (0, 255, 0), 2)
+            cv2.imshow("Frame", frame)
+            cv2.imshow("Mask", mask)
+            return 2
+        elif 7 < len(approx) < 20:
+            cv2.putText(frame, "Circle", (x, y), font, 1, (0, 0, 0))
+            cv2.putText(mask, "Circle", (x, y), font, 1, (0, 255, 0), 2)
+            cv2.imshow("Frame", frame)
+            cv2.imshow("Mask", mask)
+            return 3
 
     cv2.imshow("Frame", frame)
     cv2.imshow("Mask", mask)
 
-    key = cv2.waitKey(1)
-    if key == 27:
-        break
 
-cap.release()
-cv2.destroyAllWindows()
+
+
+if __name__ == '__main__':
+    print("Cannot run module")
