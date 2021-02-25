@@ -6,6 +6,8 @@ import time
 drone = tello.Tello()
 drone.connect()
 print(drone.get_battery())
+
+drone.streamon()
 drone.takeoff()
 drone.send_rc_control(0,0,25,0)
 time.sleep(2.2)
@@ -43,7 +45,7 @@ def trackFace(info, width, pid, pError):
     x,y = info[0]
     fb = 0
 
-    error = x - width/2
+    error = x - width //2
     speed = pid[0]*error + pid[1]* (error-pError)
     speed = int(np.clip(speed,-100,100))
 
@@ -69,8 +71,15 @@ def trackFace(info, width, pid, pError):
 #cap = cv2.VideoCapture(0)
 while True:
     #_, img = cap.read()
+    
+    #img = drone.get_frame_read().frame
+    #img, info = findFace(img)
+    #print("Area", info[1])
+    #cv2.imshow("Output", img)
+    #cv2.waitKey(1)
+    
     img = drone.get_frame_read().frame
-    img = cv2.resize(drone, img, (width, height))
+    img = cv2.resize(img, (width, height))
     img, info = findFace(img)
     pError = trackFace(info, width, pid, pError)
     #print("Center", info[0], "Area",info[1])
