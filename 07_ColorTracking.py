@@ -9,7 +9,7 @@ print(drone.get_battery())
 drone.streamon()
 drone.takeoff()
 drone.send_rc_control(0, 0, 0, 0)
-
+ # rc_control =  (left/right, forward/backward, up/down, turning(left,right))
 low_green = np.array([25, 52, 72])
 high_green = np.array([102, 255, 255])
 
@@ -20,11 +20,19 @@ while True:
     green_mask = cv2.inRange(hsv_frame, low_green, high_green)
     green_mask = cv2.GaussianBlur(green_mask,(5,5),100) 
 
-    cv2.imshow("ColorTracking", frame)
+    cv2.imshow("Camera", frame)
+    cv2.imshow("Mask", green_mask)
     green = cv2.bitwise_and(frame, frame, mask=green_mask)
     percent_green = (np.sum(green_mask) / np.size(green_mask)/255) * 100
     print(percent_green)
+    if(percent_green > 2):
+        if(percent_green < 10):
+            drone.send_rc_control(0, 20, 0, 0)
+        else:
+            drone.send_rc_control(0, 0, 0, 0)
     cv2.waitKey(1)
+
+    
 
     #lets say 10 is the perfect distance
     #only problem is when somewhat far away is the same percentages 
