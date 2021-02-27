@@ -23,7 +23,7 @@ def telloGetFrame(myDrone, w= 360,h=240):
     return img
  
 def findFace(img):
-    faceCascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+    faceCascade = cv2.CascadeClassifier('Resources/haarcascade_frontalface_default.xml')
     imgGray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
     faces = faceCascade.detectMultiScale(imgGray,1.1,6  )
  
@@ -32,6 +32,7 @@ def findFace(img):
  
     for (x,y,w,h) in faces:
         cv2.rectangle(img,(x,y),(x+w,y+h),(0,0,255),2)
+        trackFaceFB(w)
         cx = x + w//2
         cy = y + h//2
         area = w*h
@@ -43,6 +44,23 @@ def findFace(img):
         return img, [myFaceListC[i],myFaceListArea[i]]
     else:
         return img,[[0,0],0]
+
+
+def trackFaceFB(w):
+    print("WIDTH: ", w)
+
+    # if(w > ?):
+    #     myDrone.send_rc_control(0, -5, 0, 0)
+    
+    # elif (w < ?):
+    #     myDrone.send_rc_control(0, 5, 0, 0)
+    # else:
+    #     myDrone.send_rc_control(0, 0, 0, 0)
+    pass
+
+
+
+
  
 def trackFace(myDrone,info,w,pid,pError):
  
@@ -50,7 +68,6 @@ def trackFace(myDrone,info,w,pid,pError):
     error = info[0][0] - w//2
     speed = pid[0]*error + pid[1]*(error-pError)
     speed = int(np.clip(speed,-100,100))
- 
  
     print(speed)
     if info[0][0] !=0:

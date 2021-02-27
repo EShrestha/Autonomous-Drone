@@ -22,6 +22,8 @@ while True:
     img, info = findFace(img)
     ## Step 3
     pError = trackFace(myDrone,info,w,pid,pError)
+    
+        
     #print(info[0][0])
     cv2.imshow('Image',img)
     if cv2.waitKey(1) & 0xFF == ord('q'):
