@@ -1,10 +1,10 @@
-from djitellopy import Tello
+from djitellopy import tello
 import cv2
 import numpy as np
  
  
 def initializeTello():
-    myDrone = Tello()
+    myDrone = tello.Tello()
     myDrone.connect()
     myDrone.for_back_velocity = 0
     myDrone. left_right_velocity = 0
@@ -54,16 +54,16 @@ def trackFace(myDrone,info,w,pid,pError):
  
     print(speed)
     if info[0][0] !=0:
-        myDrone.yaw_velocity = speed
-    else:
+        print("ERROR amount: ", info[0][0])
+        myDrone.yaw_velocity = speed # left right turn speed
+
+    else: # Else stand still
         myDrone.for_back_velocity = 0
         myDrone.left_right_velocity = 0
         myDrone.up_down_velocity = 0
         myDrone.yaw_velocity = 0
+        myDrone.send_rc_control(0, 100, 0, 0) # Crash into face
         error = 0
     if myDrone.send_rc_control:
-        myDrone.send_rc_control(myDrone.left_right_velocity,
-                                myDrone.for_back_velocity,
-                                myDrone.up_down_velocity,
-                                myDrone.yaw_velocity)
+        myDrone.send_rc_control(myDrone.left_right_velocity, myDrone.for_back_velocity, myDrone.up_down_velocity, myDrone.yaw_velocity)
     return error
