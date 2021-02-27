@@ -23,30 +23,33 @@ while True:
     high = np.array([179, 255, 255])
     mask = cv2.inRange(hsv_frame, low, high)
     noWhite = cv2.bitwise_and(frame, frame, mask=mask)
-    percent_noWhite = (np.sum(mask) / np.size(mask)/255) * 100
+    percent_Clear = (np.sum(mask) / np.size(mask)/255) * 100
 
-    if(percent_noWhite) > 45:
-        print("Clear percent: ", percent_noWhite)
+    if(percent_Clear) > 45:
+        print("Clear percent: ", percent_Clear)
         # rc_control =  (left/right, forward/backward, up/down, turning(left,right))
         drone.send_rc_control(0, 50, 0, 0) # Goes forward until the clear percent is less than 12%
         
-    else:
+    elif(percent_Clear < 35):
         # Could make it more advance here by turning left and logging the clear percent 
         # then turning right then logging the clear percent then comparing left vs right on the clear percent to choose which direction to turn
         
         drone.send_rc_control(0, 0, 0, 0) # Stand still
         time.sleep(1)
-        while(percent_noWhite < 60): # More clear percent than 12 to account for the wall in the drones FOV after it turns
-            print("Black percent: ", (100-percent_noWhite))
+        while(percent_Clear < 60): # More clear percent than 12 to account for the wall in the drones FOV after it turns
+            print("Black percent: ", (100-percent_Clear))
             print("Turning right...")
             drone.send_rc_control(0, 0, 0, 10) # turns until the clear percent is greater than 12%
             cv2.imshow("No White", noWhite)
 
         drone.send_rc_control(0, 0, 0, 0)  # Stand still
 
+    else:
+        drone.send_rc_control(0, 0, 0, 5) # just turn
 
-    cv2.putText(noWhite, "Clear Percent: " + f'{percent_noWhite}', (0,50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,0,255), 3, cv2.LINE_AA)
-    cv2.putText(noWhite, "Black percent: " + f'{(100-percent_noWhite)}', (0,100), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,0,255), 3, cv2.LINE_AA)
+
+    cv2.putText(noWhite, "Clear Percent: " + f'{percent_Clear}', (0,50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,0,255), 3, cv2.LINE_AA)
+    cv2.putText(noWhite, "Black percent: " + f'{(100-percent_Clear)}', (0,100), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,0,255), 3, cv2.LINE_AA)
     
     cv2.imshow("No White", noWhite)
 
