@@ -32,7 +32,7 @@ def findFace(img):
  
     for (x,y,w,h) in faces:
         cv2.rectangle(img,(x,y),(x+w,y+h),(0,0,255),2)
-        trackFaceFB(w)
+        followFace(w)
         cx = x + w//2
         cy = y + h//2
         area = w*h
@@ -46,16 +46,16 @@ def findFace(img):
         return img,[[0,0],0]
 
 
-def trackFaceFB(w):
+def followFace(w):
     print("WIDTH: ", w)
-
-    # if(w > ?):
-    #     myDrone.send_rc_control(0, -5, 0, 0)
-    
-    # elif (w < ?):
-    #     myDrone.send_rc_control(0, 5, 0, 0)
-    # else:
-    #     myDrone.send_rc_control(0, 0, 0, 0)
+    #60ish is an optimal width
+    #the lowest size it was detecting was at 25 (any more and no detection)
+    if(w > 65):
+        myDrone.send_rc_control(0, -5, 0, 0)
+    elif (w < 60):
+        myDrone.send_rc_control(0, 5, 0, 0)
+    else:
+        myDrone.send_rc_control(0, 0, 0, 0)
     pass
 
 
@@ -79,7 +79,7 @@ def trackFace(myDrone,info,w,pid,pError):
         myDrone.left_right_velocity = 0
         myDrone.up_down_velocity = 0
         myDrone.yaw_velocity = 0
-        myDrone.send_rc_control(0, 100, 0, 0) # Crash into face
+        #myDrone.send_rc_control(0, 100, 0, 0) # Crash into face
         error = 0
     if myDrone.send_rc_control:
         myDrone.send_rc_control(myDrone.left_right_velocity, myDrone.for_back_velocity, myDrone.up_down_velocity, myDrone.yaw_velocity)
