@@ -1,5 +1,7 @@
 from utlis import *
 import cv2
+from time import sleep
+import time
  
 w,h = 360,240
 pid = [0.4,0.4,0]
@@ -8,6 +10,7 @@ startCounter = 0  # for no Flight 1   - for flight 0
  
  
 myDrone = initializeTello()
+#time.sleep(4);
  
 while True:
  
@@ -19,9 +22,9 @@ while True:
     ## Step 1
     img = telloGetFrame(myDrone,w,h)
     ## Step 2
-    img, info = findFace(img)
+    img, info = findFace(img, myDrone)
     ## Step 3
-    pError = trackFace(myDrone,info,w,pid,pError)
+    #pError = trackFace(myDrone,info,w,pid,pError)
     
         
     #print(info[0][0])

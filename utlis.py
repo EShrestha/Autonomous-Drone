@@ -22,23 +22,27 @@ def telloGetFrame(myDrone, w= 360,h=240):
     img = cv2.resize(myFrame,(w,h))
     return img
  
-def findFace(img):
+def findFace(img, myDrone):
     faceCascade = cv2.CascadeClassifier('Resources/haarcascade_frontalface_default.xml')
     imgGray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
     faces = faceCascade.detectMultiScale(imgGray,1.1,6  )
  
     myFaceListC = []
     myFaceListArea = []
- 
+    
+    width = 0
+
     for (x,y,w,h) in faces:
         cv2.rectangle(img,(x,y),(x+w,y+h),(0,0,255),2)
-        followFace(w)
+        width = w
         cx = x + w//2
         cy = y + h//2
         area = w*h
         myFaceListArea.append(area)
         myFaceListC.append([cx,cy])
- 
+    
+    followFace(width, myDrone)
+
     if len(myFaceListArea) !=0:
         i = myFaceListArea.index(max(myFaceListArea))
         return img, [myFaceListC[i],myFaceListArea[i]]
@@ -46,15 +50,18 @@ def findFace(img):
         return img,[[0,0],0]
 
 
-def followFace(w):
-    print("WIDTH: ", w)
+def followFace(w, myDrone):
+    #print("WIDTH: ", w)
     #60ish is an optimal width
     #the lowest size it was detecting was at 25 (any more and no detection)
     if(w > 65):
+        print("1")
         myDrone.send_rc_control(0, -5, 0, 0)
-    elif (w < 60):
-        myDrone.send_rc_control(0, 5, 0, 0)
+    elif (w < 60 and w > 25):
+        print("2")
+        myDrone.send_rc_control(0, 10, 0, 0)
     else:
+        print("3")
         myDrone.send_rc_control(0, 0, 0, 0)
     pass
 
@@ -69,9 +76,9 @@ def trackFace(myDrone,info,w,pid,pError):
     speed = pid[0]*error + pid[1]*(error-pError)
     speed = int(np.clip(speed,-100,100))
  
-    print(speed)
+    #print(speed)
     if info[0][0] !=0:
-        print("ERROR amount: ", info[0][0])
+        #print("ERROR amount: ", info[0][0])
         myDrone.yaw_velocity = speed # left right turn speed
 
     else: # Else stand still
