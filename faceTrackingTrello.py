@@ -24,7 +24,7 @@ while True:
     ## Step 2
     img, info = findFace(img, myDrone)
     ## Step 3
-    #pError = trackFace(myDrone,info,w,pid,pError)
+    pError = trackFace(myDrone,info,w,pid,pError)
     
         
     #print(info[0][0])

@@ -41,7 +41,7 @@ def findFace(img, myDrone):
         myFaceListArea.append(area)
         myFaceListC.append([cx,cy])
     
-    followFace(width, myDrone)
+    followFace(width, myDrone, img)
 
     if len(myFaceListArea) !=0:
         i = myFaceListArea.index(max(myFaceListArea))
@@ -50,20 +50,27 @@ def findFace(img, myDrone):
         return img,[[0,0],0]
 
 
-def followFace(w, myDrone):
-    #print("WIDTH: ", w)
+def followFace(w, myDrone, img):
+    print("WIDTH: ", w)
     #60ish is an optimal width
     #the lowest size it was detecting was at 25 (any more and no detection)
-    if(w > 65):
+    if(w < 40 and w > 0):
         print("1")
-        myDrone.send_rc_control(0, -5, 0, 0)
-    elif (w < 60 and w > 25):
+        
+        cv2.putText(img, "Move: Forward" , (0,20), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 1, cv2.LINE_AA)
+        myDrone.send_rc_control(0, 15, 2, 0)
+    elif (w > 60):
+        cv2.putText(img, "Move: Back" , (0,20), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 1, cv2.LINE_AA)
         print("2")
-        myDrone.send_rc_control(0, 10, 0, 0)
-    else:
+        myDrone.send_rc_control(0, -15, 2, 0)
+    elif (w >=40 and w <= 60):
+        cv2.putText(img, "Move: Sweet" , (0,20), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 1, cv2.LINE_AA)
         print("3")
         myDrone.send_rc_control(0, 0, 0, 0)
-    pass
+    else:
+        cv2.putText(img, "Move: Steady" , (0,20), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 1, cv2.LINE_AA)
+        print("4")
+        myDrone.send_rc_control(0, 0, 0, 0)
 
 
 
