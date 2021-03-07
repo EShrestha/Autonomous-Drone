@@ -18,22 +18,22 @@ while True:
     if num == 3: counts[3] += 1
     count += 1
     if count > 100:
-        count = 0
+        
         lstMax = max(counts)
         indexMax = counts.index(lstMax)
-        if indexMax == 1: 
-            print("Triangle")
-            
-
-        if indexMax == 2:
-            print("Rectangle")
+        confidence = (lstMax / count) * 100
+        if indexMax == 1 and lstMax > 20: 
+            print("Triangle" + f' Confidence: {confidence}%')
+        elif indexMax == 2:
+            print("Rectangle" + f' Confidence: {confidence}%')
             # drone do something for rectangle
 
-        if indexMax == 3:
-            print("Circle")
+        elif indexMax == 3:
+            print("Circle" + f' Confidence: {confidence}%')
             #drone do something for circle
         else:
-            print("Found nothing")
+            print("Found nothing" + f' Confidence: {100 - confidence}%')
+        count = 0
         counts = [-1, 0, 0, 0]
 
     key = cv2.waitKey(1)

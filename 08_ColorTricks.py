@@ -1,10 +1,18 @@
 import cv2 
+from djitellopy import tello
 import numpy as np
 
-cap = cv2.VideoCapture(0)
+drone = tello.Tello()
+drone.connect()
+drone.streamon()
+drone.takeoff()
+
+#cap = cv2.VideoCapture(0)
 
 while True:
-    _, frame = cap.read()
+    #_, frame = cap.read()
+    _, frame = drone.get_frame_read().frame
+
     hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
     # Red color
@@ -17,7 +25,7 @@ while True:
     percent_red = (np.sum(red_mask) / np.size(red_mask)/255) * 100
     if(percent_red) > 2.5: 
         print("RED!")
-        # Drone trick here
+        drone.flip_left()
  
 
     # Blue color
@@ -28,7 +36,7 @@ while True:
     percent_blue = (np.sum(blue_mask) / np.size(blue_mask)/255) * 100
     if(percent_blue) > 2.5: 
         print("BLUE!")
-        # Drone trick here
+        drone.flip_back()
 
     # Green color
     low_green = np.array([25, 52, 72])
@@ -38,7 +46,7 @@ while True:
     percent_green = (np.sum(green_mask) / np.size(green_mask)/255) * 100
     if(percent_green) > 2.5: 
         print("GREEN!")
-        # Drone trick here
+        drone.flip_right()
 
     # Every color except white
     low = np.array([0, 42, 0])
@@ -52,7 +60,7 @@ while True:
     cv2.imshow("Red", red)
     cv2.imshow("Blue", blue)
     cv2.imshow("Green", green)
-    cv2.imshow("No White", noWhite)
+    cv2.imshow("Nothing", noWhite)
 
     key = cv2.waitKey(1)
     if key == 27:

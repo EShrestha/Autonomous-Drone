@@ -110,37 +110,36 @@ def postchorus():
     drone.send_rc_control(0, 0, -100, 0)
     drone.send_rc_control(0, 0, 100, 0)
 
+sleep(10)
+# [Verse 1]
+verse1()
 
-while True:
-    # [Verse 1]
-    verse1()
+# [Pre chorus]
+prechorus()
 
-    # [Pre chorus]
-    prechorus()
+# [Chorus]
+chorus()
 
-    # [Chorus]
-    chorus()
+# [Verse 2]
+verse2()
 
-    # [Verse 2]
-    verse2()
+# [Pre chorus]
+prechorus()
 
-    # [Pre chorus]
-    prechorus()
+# [Chorus]
+chorus()
 
-    # [Chorus]
-    chorus()
+# [Post-Chorus]
+postchorus()
 
-    # [Post-Chorus]
-    postchorus()
+# [Bridge]
+verse2()
 
-    # [Bridge]
-    verse2()
+# [Pre chorus]
+prechorus()
 
-    # [Pre chorus]
-    prechorus()
-
-    # [Chorus] x3
-    chorus()
-    chorus()
-    chorus()
+# [Chorus] x3
+chorus()
+chorus()
+chorus()
 
