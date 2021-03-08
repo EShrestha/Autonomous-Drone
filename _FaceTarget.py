@@ -69,15 +69,14 @@ def followFace(w, myDrone, img):
         print("2")
         myDrone.send_rc_control(0, -15, 2, 0)
     elif (w >= 40 and w <= 60):
-        cv2.putText(img, "Move: Sweet", (0, 20),
+        cv2.putText(img, "Move: TARGET!", (0, 20),
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 1, cv2.LINE_AA)
         print("3")
-        myDrone.send_rc_control(0, 0, 0, 0)
+        myDrone.send_rc_control(0, 100, 0, 0)
     else:
         cv2.putText(img, "Move: Steady", (0, 20),
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 1, cv2.LINE_AA)
         print("4")
-        myDrone.send_rc_control(0, 100, 0, 0)
 
 
 def trackFace(myDrone, info, w, pid, pError):
