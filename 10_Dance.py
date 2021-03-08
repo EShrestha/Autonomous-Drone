@@ -10,7 +10,7 @@ drone.takeoff()  # Drone takes off
 
 # rc_control =  (left/right, forward/backward, up/down, turning(left,right))
 
-
+sleep(10)
 def verse1():
     # We're no strangers to love
     drone.send_rc_control(0, -10, 0, 0)
@@ -58,11 +58,15 @@ def prechorus():
     # rc_control =  (left/right, forward/backward, up/down, turning(left,right))
     drone.send_rc_control(0, 100, 30, 0)
     drone.flip_back()
+    sleep(3)
     drone.flip_back()
+    sleep(3)
 
     drone.send_rc_control(0, -50, -10, 0)
     drone.flip_forward()
+    sleep(3)
     drone.flip_forward()
+    sleep(3)
 
 
 def verse2():
@@ -73,14 +77,18 @@ def verse2():
     # Your heart's been aching, but you're too shy to say it
     drone.send_rc_control(-50, 0, 0, 0)
     drone.flip_right()
+    sleep(3)
     drone.send_rc_control(50, 0, 0, 0)
     drone.flip_left()
+    sleep(3)
 
     # Inside, we both know what's been going on
     drone.send_rc_control(-50, 0, 0, 0)
     drone.flip_right()
+    sleep(3)
     drone.send_rc_control(50, 0, 0, 0)
     drone.flip_left()
+    sleep(3)
 
     # We know the game, and we're gonna play it
     drone.send_rc_control(0, 0, -100, 0)
@@ -110,36 +118,36 @@ def postchorus():
     drone.send_rc_control(0, 0, -100, 0)
     drone.send_rc_control(0, 0, 100, 0)
 
-sleep(10)
-# [Verse 1]
-verse1()
+while True:
+    # [Verse 1]
+    verse1()
 
-# [Pre chorus]
-prechorus()
+    # [Pre chorus]
+    prechorus()
 
-# [Chorus]
-chorus()
+    # [Chorus]
+    chorus()
 
-# [Verse 2]
-verse2()
+    # [Verse 2]
+    verse2()
 
-# [Pre chorus]
-prechorus()
+    # [Pre chorus]
+    prechorus()
 
-# [Chorus]
-chorus()
+    # [Chorus]
+    chorus()
 
-# [Post-Chorus]
-postchorus()
+    # [Post-Chorus]
+    postchorus()
 
-# [Bridge]
-verse2()
+    # [Bridge]
+    verse2()
 
-# [Pre chorus]
-prechorus()
+    # [Pre chorus]
+    prechorus()
 
-# [Chorus] x3
-chorus()
-chorus()
-chorus()
+    # [Chorus] x3
+    chorus()
+    chorus()
+    chorus()
 

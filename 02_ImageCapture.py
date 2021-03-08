@@ -10,6 +10,6 @@ drone.streamon()
 
 while True:
     img = drone.get_frame_read().frame
-    img = cv2.resize(img,(360,240))
-    cv2.imshow("Drone Image", img)
+    img = cv2.resize(img,(720,480))
+    cv2.imshow("Drone ", img)
     cv2.waitKey(1)

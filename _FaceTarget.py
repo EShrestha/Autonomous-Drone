@@ -58,25 +58,20 @@ def followFace(w, myDrone, img):
     #60ish is an optimal width
     #the lowest size it was detecting was at 25 (any more and no detection)
     if(w < 40 and w > 0):
-        print("1")
-
         cv2.putText(img, "Move: Forward", (0, 20),
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 1, cv2.LINE_AA)
         myDrone.send_rc_control(0, 15, 2, 0)
     elif (w > 60):
         cv2.putText(img, "Move: Back", (0, 20),
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 1, cv2.LINE_AA)
-        print("2")
         myDrone.send_rc_control(0, -15, 2, 0)
     elif (w >= 40 and w <= 60):
         cv2.putText(img, "Move: TARGET!", (0, 20),
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 1, cv2.LINE_AA)
-        print("3")
-        myDrone.send_rc_control(0, 100, 0, 0)
+        myDrone.send_rc_control(0, 100, 2, 0)
     else:
         cv2.putText(img, "Move: Steady", (0, 20),
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 1, cv2.LINE_AA)
-        print("4")
 
 
 def trackFace(myDrone, info, w, pid, pError):

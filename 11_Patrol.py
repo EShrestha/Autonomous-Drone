@@ -16,7 +16,7 @@ for_back_velocity = 0
 rotate_velocity = 0
 while True:
     frame = drone.get_frame_read().frame
-    frame = cv2.resize(frame, (360, 240))
+    frame = cv2.resize(frame, (720, 480))
     hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
     low = np.array([0, 42, 0])

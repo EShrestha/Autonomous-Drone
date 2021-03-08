@@ -67,7 +67,7 @@ while True:
     values = getKeyboardInput()
     drone.send_rc_control(values[0], values[1], values[2], values[3])
     img = drone.get_frame_read().frame
-    img = cv2.resize(img, (360, 240))
+    img = cv2.resize(img, (720, 480))
     cv2.putText(img, f'Key Pressed: {keypress}', (0, 20), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 1, cv2.LINE_AA)
     cv2.imshow("Drone Image", img)
     cv2.waitKey(1)

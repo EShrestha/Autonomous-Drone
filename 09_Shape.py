@@ -2,7 +2,7 @@ import _DetectShape as ds
 import cv2
 
 cap = cv2.VideoCapture(0)
-cap.set(200, 200)
+cap.set(400, 400)
 
 count = 0
 counts = [-1,0,0,0]
